@@ -1,5 +1,29 @@
 apply plugin: 'com.android.library'
 
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'hermes-eventbus'
+
+    publishedGroupId = 'xiaofei.library'
+    libraryName = 'Hermes-EventBus'
+    artifact = 'hermes-eventbus'
+
+    libraryDescription = 'A library for using EventBus between processes.'
+
+    siteUrl = 'https://github.com/Xiaofei-it/Hermes-EventBus'
+    gitUrl = 'https://github.com/Xiaofei-it/Hermes-EventBus.git'
+
+    libraryVersion = '0.1.0-alpha'
+
+    developerId = 'Xiaofei-it'
+    developerName = 'Eric Zhao'
+    developerEmail = 'xiaofei.it@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
@@ -8,7 +32,7 @@ android {
         minSdkVersion 8
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName "0.1.0-alpha"
     }
     buildTypes {
         release {
@@ -25,3 +49,6 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'xiaofei.library:hermes:0.5.2-alpha'
 }
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
