@@ -83,7 +83,7 @@ public class VariableCanary<T> {
         R result = null;
         lock.lock();
         try {
-            while (!condition.satisfy(value)) {
+            while (condition != null && !condition.satisfy(value)) {
                 this.condition.await();
             }
             result = function.call(value);
