@@ -41,12 +41,13 @@ public class HermesEventBus {
 
     private boolean mMainProcess;
 
-    private IMainService mApis;
+    private VariableCanary<IMainService> mApis;
 
     private MainService mMainApis;
 
     private HermesEventBus() {
         mEventBus = EventBus.getDefault();
+        mApis = new VariableCanary<IMainService>();
     }
 
     public static HermesEventBus getDefault() {
@@ -88,8 +89,13 @@ public class HermesEventBus {
             Hermes.setHermesListener(new HermesListener() {
                 @Override
                 public void onHermesConnected(Class<? extends HermesService> service) {
-                    mApis = Hermes.getInstanceInService(service, IMainService.class);
-                    mApis.register(Process.myPid(), SubService.getInstance());
+                    mApis.set(Hermes.getInstanceInService(service, IMainService.class));
+                    mApis.action(new Action<IMainService>() {
+                        @Override
+                        public void call(IMainService o) {
+                            o.register(Process.myPid(), SubService.getInstance());
+                        }
+                    });
                 }
             });
             Hermes.connect(context);
@@ -120,51 +126,81 @@ public class HermesEventBus {
         mEventBus.unregister(subscriber);
     }
 
-    public void post(Object event) {
+    public void post(final Object event) {
         if (mMainProcess) {
             mMainApis.post(event);
         } else {
-            mApis.post(event);
+            mApis.actionNonNull(new Action<IMainService>() {
+                @Override
+                public void call(IMainService o) {
+                    o.post(event);
+                }
+            });
         }
     }
 
-    public void cancelEventDelivery(Object event) {
+    public void cancelEventDelivery(final Object event) {
         if (mMainProcess) {
             mMainApis.cancelEventDelivery(event);
         } else {
-            mApis.cancelEventDelivery(event);
+            mApis.actionNonNull(new Action<IMainService>() {
+                @Override
+                public void call(IMainService o) {
+                    o.cancelEventDelivery(event);
+                }
+            });
         }
     }
 
-    public void postSticky(Object event) {
+    public void postSticky(final Object event) {
         if (mMainProcess) {
             mMainApis.postSticky(event);
         } else {
-            mApis.postSticky(event);
+            mApis.actionNonNull(new Action<IMainService>() {
+                @Override
+                public void call(IMainService o) {
+                    o.postSticky(event);
+                }
+            });
         }
     }
 
-    public <T> T getStickyEvent(Class<T> eventType) {
+    public <T> T getStickyEvent(final Class<T> eventType) {
         if (mMainProcess) {
             return eventType.cast(mMainApis.getStickyEvent(eventType.getName()));
         } else {
-            return eventType.cast(mApis.getStickyEvent(eventType.getName()));
+            return mApis.calculateNonNull(new Function<IMainService, T>() {
+                @Override
+                public T call(IMainService o) {
+                    return eventType.cast(o.getStickyEvent(eventType.getName()));
+                }
+            });
         }
     }
 
-    public <T> T removeStickyEvent(Class<T> eventType) {
+    public <T> T removeStickyEvent(final Class<T> eventType) {
         if (mMainProcess) {
             return eventType.cast(mMainApis.removeStickyEvent(eventType.getName()));
         } else {
-            return eventType.cast(mApis.removeStickyEvent(eventType.getName()));
+            return mApis.calculateNonNull(new Function<IMainService, T>() {
+                @Override
+                public T call(IMainService o) {
+                    return eventType.cast(o.removeStickyEvent(eventType.getName()));
+                }
+            });
         }
     }
 
-    public boolean removeStickyEvent(Object event) {
+    public boolean removeStickyEvent(final Object event) {
         if (mMainProcess) {
             return mMainApis.removeStickyEvent(event);
         } else {
-            return mApis.removeStickyEvent(event);
+            return mApis.calculateNonNull(new Function<IMainService, Boolean>() {
+                @Override
+                public Boolean call(IMainService o) {
+                    return o.removeStickyEvent(event);
+                }
+            });
         }
     }
 
@@ -172,7 +208,12 @@ public class HermesEventBus {
         if (mMainProcess) {
             mMainApis.removeAllStickyEvents();
         } else {
-            mApis.removeAllStickyEvents();
+            mApis.actionNonNull(new Action<IMainService>() {
+                @Override
+                public void call(IMainService o) {
+                    o.removeAllStickyEvents();
+                }
+            });
         }
     }
 
@@ -180,5 +221,4 @@ public class HermesEventBus {
         return mEventBus.hasSubscriberForEvent(eventClass);
     }
 
-    //TODO 消息队列
 }
