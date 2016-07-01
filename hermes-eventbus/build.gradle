@@ -47,7 +47,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'xiaofei.library:hermes:0.5.2-alpha'
+    compile 'xiaofei.library:hermes:0.6.0'
     compile 'xiaofei.library:concurrent-utils:0.1.0'
 }
 
