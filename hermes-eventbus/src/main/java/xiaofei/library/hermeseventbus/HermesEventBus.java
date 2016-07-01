@@ -24,6 +24,9 @@ import android.os.Process;
 
 import org.greenrobot.eventbus.EventBus;
 
+import xiaofei.library.concurrentutils.ObjectCanary;
+import xiaofei.library.concurrentutils.util.Action;
+import xiaofei.library.concurrentutils.util.Function;
 import xiaofei.library.hermes.Hermes;
 import xiaofei.library.hermes.HermesListener;
 import xiaofei.library.hermes.HermesService;
@@ -41,13 +44,13 @@ public class HermesEventBus {
 
     private boolean mMainProcess;
 
-    private VariableCanary<IMainService> mApis;
+    private ObjectCanary<IMainService> mApis;
 
     private MainService mMainApis;
 
     private HermesEventBus() {
         mEventBus = EventBus.getDefault();
-        mApis = new VariableCanary<IMainService>();
+        mApis = new ObjectCanary<IMainService>();
     }
 
     public static HermesEventBus getDefault() {
