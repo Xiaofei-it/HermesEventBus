@@ -22,6 +22,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -33,22 +35,61 @@ import xiaofei.library.hermeseventbus.HermesEventBus;
  */
 public class SecondActivity extends AppCompatActivity {
 
-    Button button;
+    private TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         HermesEventBus.getDefault().register(this);
         setContentView(R.layout.activity_second);
-        button = (Button) findViewById(R.id.button2);
-        button.setOnClickListener(new View.OnClickListener() {
+        textView = (TextView) findViewById(R.id.tv);
+        findViewById(R.id.post_event).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HermesEventBus.getDefault().post("OK");
+                HermesEventBus.getDefault().post("event");
+            }
+        });
+        findViewById(R.id.post_sticky_event).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HermesEventBus.getDefault().postSticky("sticky event");
+            }
+        });
+        findViewById(R.id.get_sticky_event).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), HermesEventBus.getDefault().getStickyEvent(String.class), Toast.LENGTH_SHORT).show();
+            }
+        });
+        findViewById(R.id.remove_all_sticky_events).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HermesEventBus.getDefault().removeAllStickyEvents();
+                Toast.makeText(getApplicationContext(), "RemoveAllStickyEvents", Toast.LENGTH_SHORT).show();
+            }
+        });
+        findViewById(R.id.remove_sticky_event).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HermesEventBus.getDefault().removeStickyEvent("sticky event");
+                Toast.makeText(getApplicationContext(), "RemoveStickyEvent", Toast.LENGTH_SHORT).show();
+            }
+        });
+        findViewById(R.id.remove_get_sticky_event).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), HermesEventBus.getDefault().removeStickyEvent(String.class), Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        HermesEventBus.getDefault().unregister(this);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void g(String s) {
-        button.setText(s);
+        textView.setText(s);
     }
 }
