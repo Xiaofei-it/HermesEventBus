@@ -89,6 +89,14 @@ You can add some attributes to the service, if necessary.
 
 ###Step 3
 
+The event posted between apps should have the same package name, the same class name and the same
+methods.
+
+And remember to keep all of your event classes and the methods within the classes in the
+proguard-rule files.
+
+###Step 4
+
 In the onCreate method of the application class of the main app, add the following:
 
 ```
@@ -103,7 +111,7 @@ HermesEventBus.getDefault().connectApp(this, packageName);
 
 The "packageName" is the package name of the main app.
 
-###Step 4
+###Step 5
 
 Every time you use EventBus, replace "EventBus" with "HermesEventBus", as the following does:
 
