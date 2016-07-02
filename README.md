@@ -3,6 +3,8 @@
 Hermes-EventBus is a library for using EventBus between processes, useful in IPC or plugin-in
 development. It has the same APIs as EventBus and easy to use.
 
+[Chinese Readme 中文文档](https://github.com/Xiaofei-it/Hermes-EventBus/blob/master/README-zh-CN.md)
+
 Note that this library is based on EventBus 3.0.0 and if you are using the lower version, you should
 modify your code. Otherwise you will not receive any event!!!
 
