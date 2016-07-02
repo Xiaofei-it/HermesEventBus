@@ -3,6 +3,19 @@
 Hermes-EventBus is a library for using EventBus between processes, useful in IPC or plugin-in
 development. It has the same APIs as EventBus and easy to use.
 
+Note that this library is based on EventBus 3.0.0 and if you are using the lower version, you should
+modify your code. Otherwise you will not receive any event!!!
+
+It is useless to name the method receiving events "onEventXXX". Instead, you should add @Subscribe
+annotation on the method, as the following does:
+
+```
+@Subscribe(threadMode = ThreadMode.MAIN)
+public void showText(String text) {
+    textView.setText(text);
+}
+```
+
 #Principle
 
 The library is based on two libraries: [Hermes](https://github.com/Xiaofei-it/Hermes) and
@@ -11,12 +24,28 @@ The library is based on two libraries: [Hermes](https://github.com/Xiaofei-it/He
 The event post is based on EventBus and the IPC is based on Hermes, a smart, novel and easy-to-use
 framework for Android Inter-Process Communication (IPC).
 
+This library will choose a process as the main process, and regard the other processes as the
+sub-process.
+
+Each time an event is posted, the library does the following:
+
+1. Use the Hermes library to send the event to the main process.
+
+2. The main process uses EventBus to post the event within the main process.
+
+3. The main process uses the Hermes library to send the event to all of the sub-processes.
+
+4. Each sub-process uses EventBus to post the event within itself.
+
 #Usage
 
-This library can post events not only within an app but also between distinct apps.
+This library can post events not only within a single app which has more than one process, but also
+between distinct apps.
 
 ##Within a single app
-If you only want to post and receive events within a single app, then do the following four steps:
+
+If you only want to post and receive events within a single app which has more than one process,
+then do the following four steps:
 
 ###Step 1
 
@@ -59,7 +88,7 @@ HermesEventBus.getDefault().init(this);
 
 ###Step 4
 
-Every time you use EventBus, replace "EventBus" with "HermesEventBus", as the following does:
+Each time you use EventBus, replace "EventBus" with "HermesEventBus", as the following does:
 
 ```
 HermesEventBus.getDefault().register(this);
@@ -135,7 +164,7 @@ The "packageName" is the package name of the main app.
 
 ###Step 5
 
-Every time you use EventBus, replace "EventBus" with "HermesEventBus", as the following does:
+Each time you use EventBus, replace "EventBus" with "HermesEventBus", as the following does:
 
 ```
 HermesEventBus.getDefault().register(this);
