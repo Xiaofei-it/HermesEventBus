@@ -21,6 +21,7 @@ package xiaofei.library.hermeseventbus;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Process;
+import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -35,6 +36,8 @@ import xiaofei.library.hermes.HermesService;
  * Created by Xiaofei on 16/6/4.
  */
 public class HermesEventBus {
+
+    private static final String TAG = "HermesEventBus";
 
     private static volatile HermesEventBus sInstance = null;
 
@@ -100,6 +103,18 @@ public class HermesEventBus {
                         }
                     });
                 }
+
+                @Override
+                public void onHermesDisconnected(Class<? extends HermesService> service) {
+                    mApis.action(new Action<IMainService>() {
+                        @Override
+                        public void call(IMainService o) {
+                            o.unregister(Process.myPid());
+                        }
+                    });
+                    mApis.set(null);
+                    mApis = null;
+                }
             });
             Hermes.connect(context);
         }
@@ -133,12 +148,16 @@ public class HermesEventBus {
         if (mMainProcess) {
             mMainApis.post(event);
         } else {
-            mApis.actionNonNull(new Action<IMainService>() {
-                @Override
-                public void call(IMainService o) {
-                    o.post(event);
-                }
-            });
+            if (mApis == null) {
+                Log.w(TAG, "Hermes service disconnected!");
+            } else {
+                mApis.actionNonNull(new Action<IMainService>() {
+                    @Override
+                    public void call(IMainService o) {
+                        o.post(event);
+                    }
+                });
+            }
         }
     }
 
@@ -146,12 +165,16 @@ public class HermesEventBus {
         if (mMainProcess) {
             mMainApis.cancelEventDelivery(event);
         } else {
-            mApis.actionNonNull(new Action<IMainService>() {
-                @Override
-                public void call(IMainService o) {
-                    o.cancelEventDelivery(event);
-                }
-            });
+            if (mApis == null) {
+                Log.w(TAG, "Hermes service disconnected!");
+            } else {
+                mApis.actionNonNull(new Action<IMainService>() {
+                    @Override
+                    public void call(IMainService o) {
+                        o.cancelEventDelivery(event);
+                    }
+                });
+            }
         }
     }
 
@@ -159,12 +182,16 @@ public class HermesEventBus {
         if (mMainProcess) {
             mMainApis.postSticky(event);
         } else {
-            mApis.actionNonNull(new Action<IMainService>() {
-                @Override
-                public void call(IMainService o) {
-                    o.postSticky(event);
-                }
-            });
+            if (mApis == null) {
+                Log.w(TAG, "Hermes service disconnected!");
+            } else {
+                mApis.actionNonNull(new Action<IMainService>() {
+                    @Override
+                    public void call(IMainService o) {
+                        o.postSticky(event);
+                    }
+                });
+            }
         }
     }
 
@@ -172,12 +199,17 @@ public class HermesEventBus {
         if (mMainProcess) {
             return eventType.cast(mMainApis.getStickyEvent(eventType.getName()));
         } else {
-            return mApis.calculateNonNull(new Function<IMainService, T>() {
-                @Override
-                public T call(IMainService o) {
-                    return eventType.cast(o.getStickyEvent(eventType.getName()));
-                }
-            });
+            if (mApis == null) {
+                Log.w(TAG, "Hermes service disconnected!");
+                return null;
+            } else {
+                return mApis.calculateNonNull(new Function<IMainService, T>() {
+                    @Override
+                    public T call(IMainService o) {
+                        return eventType.cast(o.getStickyEvent(eventType.getName()));
+                    }
+                });
+            }
         }
     }
 
@@ -185,12 +217,17 @@ public class HermesEventBus {
         if (mMainProcess) {
             return eventType.cast(mMainApis.removeStickyEvent(eventType.getName()));
         } else {
-            return mApis.calculateNonNull(new Function<IMainService, T>() {
-                @Override
-                public T call(IMainService o) {
-                    return eventType.cast(o.removeStickyEvent(eventType.getName()));
-                }
-            });
+            if (mApis == null) {
+                Log.w(TAG, "Hermes service disconnected!");
+                return null;
+            } else {
+                return mApis.calculateNonNull(new Function<IMainService, T>() {
+                    @Override
+                    public T call(IMainService o) {
+                        return eventType.cast(o.removeStickyEvent(eventType.getName()));
+                    }
+                });
+            }
         }
     }
 
@@ -198,12 +235,17 @@ public class HermesEventBus {
         if (mMainProcess) {
             return mMainApis.removeStickyEvent(event);
         } else {
-            return mApis.calculateNonNull(new Function<IMainService, Boolean>() {
-                @Override
-                public Boolean call(IMainService o) {
-                    return o.removeStickyEvent(event);
-                }
-            });
+            if (mApis == null) {
+                Log.w(TAG, "Hermes service disconnected!");
+                return false;
+            } else {
+                return mApis.calculateNonNull(new Function<IMainService, Boolean>() {
+                    @Override
+                    public Boolean call(IMainService o) {
+                        return o.removeStickyEvent(event);
+                    }
+                });
+            }
         }
     }
 
@@ -211,12 +253,16 @@ public class HermesEventBus {
         if (mMainProcess) {
             mMainApis.removeAllStickyEvents();
         } else {
-            mApis.actionNonNull(new Action<IMainService>() {
-                @Override
-                public void call(IMainService o) {
-                    o.removeAllStickyEvents();
-                }
-            });
+            if (mApis == null) {
+                Log.w(TAG, "Hermes service disconnected!");
+            } else {
+                mApis.actionNonNull(new Action<IMainService>() {
+                    @Override
+                    public void call(IMainService o) {
+                        o.removeAllStickyEvents();
+                    }
+                });
+            }
         }
     }
 
