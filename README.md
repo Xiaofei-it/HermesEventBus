@@ -28,6 +28,17 @@ dependencies {
 }
 ```
 
+For maven, please use the following:
+
+```
+<dependency>
+  <groupId>xiaofei.library</groupId>
+  <artifactId>hermes-eventbus</artifactId>
+  <version>0.1.0</version>
+  <type>pom</type>
+</dependency>
+```
+
 ###Step 2
 
 In your AndroidManifest.xml, add the service below:
@@ -72,6 +83,17 @@ Add the following into the gradle file of each app:
 dependencies {
     compile 'xiaofei.library:hermes-eventbus:0.1.0'
 }
+```
+
+For maven, please use the following:
+
+```
+<dependency>
+  <groupId>xiaofei.library</groupId>
+  <artifactId>hermes-eventbus</artifactId>
+  <version>0.1.0</version>
+  <type>pom</type>
+</dependency>
 ```
 
 ###Step 2
