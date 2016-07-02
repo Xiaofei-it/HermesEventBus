@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         Log.v("EricZhao", "post");
-                        HermesEventBus.getDefault().post("event");
+                        HermesEventBus.getDefault().post("This is an event from the main process.");
                     }
                 }.start();
             }
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         Log.v("EricZhao", "post sticky");
-                        HermesEventBus.getDefault().postSticky("sticky event");
+                        HermesEventBus.getDefault().postSticky("This is a sticky event from the main process");
                     }
                 }.start();
             }
@@ -94,14 +94,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 HermesEventBus.getDefault().removeAllStickyEvents();
-                Toast.makeText(getApplicationContext(), "RemoveAllStickyEvents", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "All sticky events are removed", Toast.LENGTH_SHORT).show();
             }
         });
         findViewById(R.id.remove_sticky_event).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 HermesEventBus.getDefault().removeStickyEvent("sticky event");
-                Toast.makeText(getApplicationContext(), "RemoveStickyEvent", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Sticky event is removed", Toast.LENGTH_SHORT).show();
             }
         });
         findViewById(R.id.remove_get_sticky_event).setOnClickListener(new View.OnClickListener() {
@@ -113,8 +113,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void g(String s) {
-        textView.setText(s);
+    public void showText(String text) {
+        textView.setText(text);
     }
 
     @Override
