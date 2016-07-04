@@ -30,5 +30,6 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         HermesEventBus.getDefault().init(this);
+        HermesEventBus.getDefault().post("Bug");
     }
 }
