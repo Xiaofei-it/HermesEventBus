@@ -40,7 +40,7 @@ public void showText(String text) {
 
 ##单一app内的用法
 
-如果你在单一app内进行多进程开发，那么只需要做以下四步：
+如果你在单一app内进行多进程开发，那么只需要做以下三步：
 
 ###Step 1
 
@@ -48,7 +48,7 @@ public void showText(String text) {
 
 ```
 dependencies {
-    compile 'xiaofei.library:hermes-eventbus:0.1.0'
+    compile 'xiaofei.library:hermes-eventbus:0.1.1'
 }
 ```
 
@@ -58,22 +58,12 @@ dependencies {
 <dependency>
   <groupId>xiaofei.library</groupId>
   <artifactId>hermes-eventbus</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
   <type>pom</type>
 </dependency>
 ```
 
 ###Step 2
-
-在AndroidManifest.xml加入下面的service:
-
-```
-<service android:name="xiaofei.library.hermes.HermesService$HermesService0"/>
-```
-
-你可以给这个service加上一些属性。
-
-###Step 3
 
 在Application的onCreate中加上以下语句进行初始化：
 
@@ -81,7 +71,7 @@ dependencies {
 HermesEventBus.getDefault().init(this);
 ```
 
-###Step 4
+###Step 3
 
 每次使用EventBus的时候，用HermesEventBus代替EventBus。
 
@@ -103,7 +93,7 @@ HermesEventBus也能够在一个进程间传递event，所以如果你已经使�
 
 ```
 dependencies {
-    compile 'xiaofei.library:hermes-eventbus:0.1.0'
+    compile 'xiaofei.library:hermes-eventbus:0.1.1'
 }
 ```
 
@@ -113,7 +103,7 @@ dependencies {
 <dependency>
   <groupId>xiaofei.library</groupId>
   <artifactId>hermes-eventbus</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
   <type>pom</type>
 </dependency>
 ```

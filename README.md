@@ -47,7 +47,7 @@ between distinct apps.
 ##Within a single app
 
 If you only want to post and receive events within a single app which has more than one process,
-then do the following four steps:
+then do the following three steps:
 
 ###Step 1
 
@@ -55,7 +55,7 @@ Add the following into your gradle file:
 
 ```
 dependencies {
-    compile 'xiaofei.library:hermes-eventbus:0.1.0'
+    compile 'xiaofei.library:hermes-eventbus:0.1.1'
 }
 ```
 
@@ -65,22 +65,12 @@ For maven, please use the following:
 <dependency>
   <groupId>xiaofei.library</groupId>
   <artifactId>hermes-eventbus</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
   <type>pom</type>
 </dependency>
 ```
 
 ###Step 2
-
-In your AndroidManifest.xml, add the service below:
-
-```
-<service android:name="xiaofei.library.hermes.HermesService$HermesService0"/>
-```
-
-You can add some attributes to the service, if necessary.
-
-###Step 3
 
 In the onCreate method of your application class, add the following:
 
@@ -88,7 +78,7 @@ In the onCreate method of your application class, add the following:
 HermesEventBus.getDefault().init(this);
 ```
 
-###Step 4
+###Step 3
 
 Each time you use EventBus, replace "EventBus" with "HermesEventBus", as the following does:
 
@@ -112,7 +102,7 @@ Add the following into the gradle file of each app:
 
 ```
 dependencies {
-    compile 'xiaofei.library:hermes-eventbus:0.1.0'
+    compile 'xiaofei.library:hermes-eventbus:0.1.1'
 }
 ```
 
@@ -122,7 +112,7 @@ For maven, please use the following:
 <dependency>
   <groupId>xiaofei.library</groupId>
   <artifactId>hermes-eventbus</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
   <type>pom</type>
 </dependency>
 ```
