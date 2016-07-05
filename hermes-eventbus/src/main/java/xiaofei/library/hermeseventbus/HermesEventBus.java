@@ -116,7 +116,7 @@ public class HermesEventBus {
                     mApis = null;
                 }
             });
-            Hermes.connect(context);
+            Hermes.connect(context, Service.class);
         }
     }
 
@@ -268,6 +268,10 @@ public class HermesEventBus {
 
     public boolean hasSubscriberForEvent(Class<?> eventClass) {
         return mEventBus.hasSubscriberForEvent(eventClass);
+    }
+
+    public static class Service extends HermesService {
+
     }
 
 }
