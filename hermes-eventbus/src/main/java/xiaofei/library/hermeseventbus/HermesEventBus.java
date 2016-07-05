@@ -151,7 +151,7 @@ public class HermesEventBus {
             if (mApis == null) {
                 Log.w(TAG, "Hermes service disconnected!");
             } else {
-                mApis.actionNonNull(new Action<IMainService>() {
+                mApis.actionNonNullNonBlocking(new Action<IMainService>() {
                     @Override
                     public void call(IMainService o) {
                         o.post(event);
@@ -168,7 +168,7 @@ public class HermesEventBus {
             if (mApis == null) {
                 Log.w(TAG, "Hermes service disconnected!");
             } else {
-                mApis.actionNonNull(new Action<IMainService>() {
+                mApis.actionNonNullNonBlocking(new Action<IMainService>() {
                     @Override
                     public void call(IMainService o) {
                         o.cancelEventDelivery(event);
@@ -185,7 +185,7 @@ public class HermesEventBus {
             if (mApis == null) {
                 Log.w(TAG, "Hermes service disconnected!");
             } else {
-                mApis.actionNonNull(new Action<IMainService>() {
+                mApis.actionNonNullNonBlocking(new Action<IMainService>() {
                     @Override
                     public void call(IMainService o) {
                         o.postSticky(event);
@@ -256,7 +256,7 @@ public class HermesEventBus {
             if (mApis == null) {
                 Log.w(TAG, "Hermes service disconnected!");
             } else {
-                mApis.actionNonNull(new Action<IMainService>() {
+                mApis.actionNonNullNonBlocking(new Action<IMainService>() {
                     @Override
                     public void call(IMainService o) {
                         o.removeAllStickyEvents();
