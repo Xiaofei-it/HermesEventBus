@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void showText(String text) {
         textView.setText(text);
+        Log.v("EricZhao", "MainActivity receives an event: " + text);
     }
 
     @Override
