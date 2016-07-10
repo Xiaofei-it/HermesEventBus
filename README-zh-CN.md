@@ -22,6 +22,8 @@ public void showText(String text) {
 
 事件收发是基于EventBus，IPC通信是基于Hermes。Hermes是一个简单易用的Android IPC库。
 
+<img src="doc/figure.png" width="600" height="400"/>
+
 本库首先选一个进程作为主进程，将其他进程作为子进程。
 
 每次一个event被发送都会经过以下四步：
