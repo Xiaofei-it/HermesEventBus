@@ -26,6 +26,8 @@ The library is based on two libraries: [Hermes](https://github.com/Xiaofei-it/He
 The event post is based on EventBus and the IPC is based on Hermes, a smart, novel and easy-to-use
 framework for Android Inter-Process Communication (IPC).
 
+<img src="doc/figure.png" width="500" height="187"/>
+
 This library will choose a process as the main process, and regard the other processes as the
 sub-process.
 
