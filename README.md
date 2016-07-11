@@ -5,7 +5,7 @@ development. It has the same APIs as EventBus and easy to use.
 
 [Chinese Readme 中文文档](https://github.com/Xiaofei-it/Hermes-EventBus/blob/master/README-zh-CN.md)
 
-[EventBus](https://github.com/greenrobot/EventBus) is one of the most widely-used library which
+[EventBus](https://github.com/greenrobot/EventBus) is one of the most widely-used libraries which
 simplifies communication between different components in Android.
 
 Note that this library is based on EventBus 3.0.0 and if you are using the lower version, you should
