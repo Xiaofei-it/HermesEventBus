@@ -1,6 +1,6 @@
-# Hermes-EventBus
+# HermesEventBus
 
-Hermes-EventBus is a library for using EventBus between processes, useful in IPC or plugin-in
+HermesEventBus is a library for using EventBus between processes, useful in IPC or plugin-in
 development. It has the same APIs as EventBus and easy to use.
 
 [Chinese Readme 中文文档](README-zh-CN.md)

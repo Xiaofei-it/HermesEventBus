@@ -1,6 +1,6 @@
-# Hermes-EventBus
+# HermesEventBus
 
-Hermes-EventBus是一个基于EventBus的、能在进程间发送和接收event的库，在IPC或者插件开发中非常有用。它底层基于
+HermesEventBus是一个基于EventBus的、能在进程间发送和接收event的库，在IPC或者插件开发中非常有用。它底层基于
 EventBus，并且和EventBus有相同API。
 
 [EventBus](https://github.com/greenrobot/EventBus)是Android系统上使用最广泛的简化模块之间通信的库。

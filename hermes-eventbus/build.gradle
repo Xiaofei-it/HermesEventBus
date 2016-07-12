@@ -5,13 +5,13 @@ ext {
     bintrayName = 'hermes-eventbus'
 
     publishedGroupId = 'xiaofei.library'
-    libraryName = 'Hermes-EventBus'
+    libraryName = 'HermesEventBus'
     artifact = 'hermes-eventbus'
 
     libraryDescription = 'A library for using EventBus between processes.'
 
-    siteUrl = 'https://github.com/Xiaofei-it/Hermes-EventBus'
-    gitUrl = 'https://github.com/Xiaofei-it/Hermes-EventBus.git'
+    siteUrl = 'https://github.com/Xiaofei-it/HermesEventBus-OriginalRepo'
+    gitUrl = 'https://github.com/Xiaofei-it/HermesEventBus-OriginalRepo.git'
 
     libraryVersion = '0.1.1'
 
