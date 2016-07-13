@@ -172,7 +172,8 @@ HermesEventBus.getDefault().post(new Event());
 HermesEventBus can also post and receive event within a process, so do not use EventBus any more if
 you have already being using HermesEventBus.
 
-# License
-[Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+#License
 
-Copyright (c) 2016, ele.me
+Copyright (C) 2016 Xiaofei, ele.me
+
+HermesEventBus binaries and source code can be used according to the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
