@@ -38,6 +38,8 @@ public void showText(String text) {
 
 4、每个子进程使用EventBus在子进程内部发送event。
 
+另外还使用了[Concurrent-Utils](https://github.com/Xiaofei-it/Concurrent-Utils)库。
+
 #用法
 
 本库能在app内实现多进程event收发，也可以跨app实现event收发。

@@ -30,6 +30,8 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         HermesEventBus.getDefault().init(this);
+        //The following is to check whether the potential bug caused by a dead lock
+        //in the main thread has been fixed.
         HermesEventBus.getDefault().post("Event posted before connection from sub-process");
     }
 }

@@ -32,7 +32,7 @@ framework for Android Inter-Process Communication (IPC).
 <img src="doc/figure.png" width="600" height="400"/>
 
 This library will choose a process as the main process, and regard the other processes as the
-sub-process.
+sub-processes.
 
 Each time an event is posted, the library does the following:
 
@@ -43,6 +43,10 @@ Each time an event is posted, the library does the following:
 3. The main process uses the Hermes library to send the event to all of the sub-processes.
 
 4. Each sub-process uses EventBus to post the event within itself.
+
+Moreover, import the [Concurrent-Utils](https://github.com/Xiaofei-it/Concurrent-Utils) library to
+solve the subtle problems with respect to concurrency, which are caused by dead locks and race
+conditions.
 
 #Usage
 
