@@ -176,6 +176,16 @@ HermesEventBus.getDefault().post(new Event());
 HermesEventBus can also post and receive event within a process, so do not use EventBus any more if
 you have already being using HermesEventBus.
 
+#More open source projects by Xiaofei
+
+Xiaofei's GitHub: [https://github.com/Xiaofei-it](https://github.com/Xiaofei-it)
+
+Hermes: [https://github.com/Xiaofei-it/Hermes](https://github.com/Xiaofei-it/Hermes)
+
+AndroidDataStorage: [https://github.com/Xiaofei-it/AndroidDataStorage](https://github.com/Xiaofei-it/AndroidDataStorage)
+
+ComparatorGenerator[https://github.com/Xiaofei-it/ComparatorGenerator](https://github.com/Xiaofei-it/ComparatorGenerator)
+
 #License
 
 Copyright (C) 2016 Xiaofei, ele.me

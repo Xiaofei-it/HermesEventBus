@@ -162,6 +162,16 @@ HermesEventBus.getDefault().post(new Event());
 
 HermesEventBus也能够在一个进程间传递event，所以如果你已经使用了HermesEventBus，那么就不要再使用EventBus了。
 
+#友情链接
+
+Xiaofei's GitHub: [https://github.com/Xiaofei-it](https://github.com/Xiaofei-it)
+
+Hermes: [https://github.com/Xiaofei-it/Hermes](https://github.com/Xiaofei-it/Hermes)
+
+AndroidDataStorage: [https://github.com/Xiaofei-it/AndroidDataStorage](https://github.com/Xiaofei-it/AndroidDataStorage)
+
+ComparatorGenerator[https://github.com/Xiaofei-it/ComparatorGenerator](https://github.com/Xiaofei-it/ComparatorGenerator)
+
 #License
 
 Copyright (C) 2016 Xiaofei, ele.me
