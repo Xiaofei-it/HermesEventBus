@@ -170,7 +170,7 @@ Hermes: [https://github.com/Xiaofei-it/Hermes](https://github.com/Xiaofei-it/Her
 
 AndroidDataStorage: [https://github.com/Xiaofei-it/AndroidDataStorage](https://github.com/Xiaofei-it/AndroidDataStorage)
 
-ComparatorGenerator[https://github.com/Xiaofei-it/ComparatorGenerator](https://github.com/Xiaofei-it/ComparatorGenerator)
+ComparatorGenerator: [https://github.com/Xiaofei-it/ComparatorGenerator](https://github.com/Xiaofei-it/ComparatorGenerator)
 
 #License
 
