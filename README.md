@@ -180,11 +180,15 @@ you have already being using HermesEventBus.
 
 Xiaofei's GitHub: [https://github.com/Xiaofei-it](https://github.com/Xiaofei-it)
 
-Hermes: [https://github.com/Xiaofei-it/Hermes](https://github.com/Xiaofei-it/Hermes)
+[Hermes](https://github.com/Xiaofei-it/Hermes) is a smart, novel and easy-to-use framework for
+Android Inter-Process Communication (IPC).
 
-AndroidDataStorage: [https://github.com/Xiaofei-it/AndroidDataStorage](https://github.com/Xiaofei-it/AndroidDataStorage)
+[AndroidDataStorage](https://github.com/Xiaofei-it/AndroidDataStorage) is an easy-to-use and
+high-performance library for storing data in the Android system.
 
-ComparatorGenerator: [https://github.com/Xiaofei-it/ComparatorGenerator](https://github.com/Xiaofei-it/ComparatorGenerator)
+[ComparatorGenerator](https://github.com/Xiaofei-it/ComparatorGenerator) is an easy-to-use helper
+class for generating a comparator for a specified class, useful when sorting the instances of the
+specified class.
 
 #License
 

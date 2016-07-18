@@ -166,11 +166,11 @@ HermesEventBus也能够在一个进程间传递event，所以如果你已经使�
 
 Xiaofei's GitHub: [https://github.com/Xiaofei-it](https://github.com/Xiaofei-it)
 
-Hermes: [https://github.com/Xiaofei-it/Hermes](https://github.com/Xiaofei-it/Hermes)
+[Hermes](https://github.com/Xiaofei-it/Hermes)是一套新颖巧妙易用的Android进程间通信IPC框架。
 
-AndroidDataStorage: [https://github.com/Xiaofei-it/AndroidDataStorage](https://github.com/Xiaofei-it/AndroidDataStorage)
+[AndroidDataStorage](https://github.com/Xiaofei-it/AndroidDataStorage)是一个简洁易用并且具有高性能的Android存储库。
 
-ComparatorGenerator: [https://github.com/Xiaofei-it/ComparatorGenerator](https://github.com/Xiaofei-it/ComparatorGenerator)
+[ComparatorGenerator](https://github.com/Xiaofei-it/ComparatorGenerator)是一个易用的生成Comparator的工具类。在排序时特别有用。
 
 #License
 
