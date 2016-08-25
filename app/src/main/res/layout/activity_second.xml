@@ -42,4 +42,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="remove all sticky events"/>
+    <Button
+        android:id="@+id/kill_process"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kill process"/>
 </LinearLayout>

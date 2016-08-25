@@ -19,6 +19,7 @@
 package xiaofei.library.hermeseventbustest;
 
 import android.os.Bundle;
+import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -79,6 +80,13 @@ public class SecondActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), HermesEventBus.getDefault().removeStickyEvent(String.class), Toast.LENGTH_SHORT).show();
+            }
+        });
+        findViewById(R.id.kill_process).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HermesEventBus.getDefault().destroy();
+                Process.killProcess(Process.myPid());
             }
         });
     }
