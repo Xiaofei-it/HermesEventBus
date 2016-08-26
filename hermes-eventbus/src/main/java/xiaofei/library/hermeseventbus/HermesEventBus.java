@@ -126,13 +126,9 @@ public class HermesEventBus {
         Hermes.setHermesListener(new HermesListener() {
             @Override
             public void onHermesConnected(Class<? extends HermesService> service) {
-                mApis.set(Hermes.getInstanceInService(service, IMainService.class));
-                mApis.action(new Action<IMainService>() {
-                    @Override
-                    public void call(IMainService o) {
-                        o.register(Process.myPid(), SubService.getInstance());
-                    }
-                });
+                IMainService mainService = Hermes.getInstanceInService(service, IMainService.class);
+                mainService.register(Process.myPid(), SubService.getInstance());
+                mApis.set(mainService);
             }
 
             @Override
