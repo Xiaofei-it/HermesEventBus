@@ -123,6 +123,30 @@ public class HermesEventBus {
     public void connectApp(Context context, String packageName) {
         mContext = context;
         mMainProcess = false;
+        Hermes.setHermesListener(new HermesListener() {
+            @Override
+            public void onHermesConnected(Class<? extends HermesService> service) {
+                mApis.set(Hermes.getInstanceInService(service, IMainService.class));
+                mApis.action(new Action<IMainService>() {
+                    @Override
+                    public void call(IMainService o) {
+                        o.register(Process.myPid(), SubService.getInstance());
+                    }
+                });
+            }
+
+            @Override
+            public void onHermesDisconnected(Class<? extends HermesService> service) {
+                mApis.action(new Action<IMainService>() {
+                    @Override
+                    public void call(IMainService o) {
+                        o.unregister(Process.myPid());
+                    }
+                });
+                mApis.set(null);
+                mApis = null;
+            }
+        });
         Hermes.connectApp(context, packageName);
     }
 
