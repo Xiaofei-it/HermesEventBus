@@ -20,9 +20,12 @@ package xiaofei.library.hermeseventbus;
 
 import org.greenrobot.eventbus.EventBus;
 
+import xiaofei.library.hermes.annotation.ClassId;
+
 /**
  * Created by Xiaofei on 16/6/25.
  */
+@ClassId("SubService")
 public class SubService implements ISubService {
 
     private static volatile SubService sInstance = null;

@@ -92,30 +92,8 @@ public class HermesEventBus {
             Hermes.register(MainService.class);
             mMainApis = MainService.getInstance();
         } else {
-            Hermes.setHermesListener(new HermesListener() {
-                @Override
-                public void onHermesConnected(Class<? extends HermesService> service) {
-                    mApis.set(Hermes.getInstanceInService(service, IMainService.class));
-                    mApis.action(new Action<IMainService>() {
-                        @Override
-                        public void call(IMainService o) {
-                            o.register(Process.myPid(), SubService.getInstance());
-                        }
-                    });
-                }
-
-                @Override
-                public void onHermesDisconnected(Class<? extends HermesService> service) {
-                    mApis.action(new Action<IMainService>() {
-                        @Override
-                        public void call(IMainService o) {
-                            o.unregister(Process.myPid());
-                        }
-                    });
-                    mApis.set(null);
-                    mApis = null;
-                }
-            });
+            Hermes.register(SubService.class); // TODO is this necessary?
+            Hermes.setHermesListener(new HermesListener());
             Hermes.connect(context, Service.class);
         }
     }
@@ -123,26 +101,8 @@ public class HermesEventBus {
     public void connectApp(Context context, String packageName) {
         mContext = context;
         mMainProcess = false;
-        Hermes.setHermesListener(new HermesListener() {
-            @Override
-            public void onHermesConnected(Class<? extends HermesService> service) {
-                IMainService mainService = Hermes.getInstanceInService(service, IMainService.class);
-                mainService.register(Process.myPid(), SubService.getInstance());
-                mApis.set(mainService);
-            }
-
-            @Override
-            public void onHermesDisconnected(Class<? extends HermesService> service) {
-                mApis.action(new Action<IMainService>() {
-                    @Override
-                    public void call(IMainService o) {
-                        o.unregister(Process.myPid());
-                    }
-                });
-                mApis.set(null);
-                mApis = null;
-            }
-        });
+        Hermes.register(SubService.class); // TODO is this necessary?
+        Hermes.setHermesListener(new HermesListener());
         Hermes.connectApp(context, packageName);
     }
 
@@ -288,6 +248,30 @@ public class HermesEventBus {
 
     public boolean hasSubscriberForEvent(Class<?> eventClass) {
         return mEventBus.hasSubscriberForEvent(eventClass);
+    }
+
+    public class HermesListener extends xiaofei.library.hermes.HermesListener {
+
+        @Override
+        public void onHermesConnected(Class<? extends HermesService> service) {
+            IMainService mainService = Hermes.getInstanceInService(service, IMainService.class);
+            mainService.register(Process.myPid(), SubService.getInstance());
+            mApis.set(mainService);
+        }
+
+        @Override
+        public void onHermesDisconnected(Class<? extends HermesService> service) {
+            // TODO any problem?
+            // TODO with the above?
+            mApis.action(new Action<IMainService>() {
+                @Override
+                public void call(IMainService o) {
+                    o.unregister(Process.myPid());
+                }
+            });
+            mApis.set(null);
+            mApis = null;
+        }
     }
 
     public static class Service extends HermesService {
