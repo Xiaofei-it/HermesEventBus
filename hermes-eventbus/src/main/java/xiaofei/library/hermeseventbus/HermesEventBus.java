@@ -261,8 +261,6 @@ public class HermesEventBus {
 
         @Override
         public void onHermesDisconnected(Class<? extends HermesService> service) {
-            // TODO any problem?
-            // TODO with the above?
             mApis.action(new Action<IMainService>() {
                 @Override
                 public void call(IMainService o) {
