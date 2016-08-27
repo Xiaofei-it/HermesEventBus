@@ -53,6 +53,14 @@ public class HermesEventBus {
 
     private volatile MainService mMainApis;
 
+    /**
+     * TODO
+     * 1. Change the name of mApis
+     * 2. Create an integer field to indicate the state: NOT_CONNECTED, CONNECTED, DISCONNECTED
+     *    to fix the problems in the GitHub issues.
+     * 3. Consider more about the interleaving.
+      */
+
     private HermesEventBus() {
         mEventBus = EventBus.getDefault();
         mApis = new ObjectCanary<IMainService>();
@@ -258,6 +266,9 @@ public class HermesEventBus {
         public void onHermesConnected(Class<? extends HermesService> service) {
             IMainService mainService = Hermes.getInstanceInService(service, IMainService.class);
             mainService.register(Process.myPid(), SubService.getInstance());
+            if (mApis == null) {
+                mApis = new ObjectCanary<IMainService>();
+            }
             mApis.set(mainService);
         }
 
