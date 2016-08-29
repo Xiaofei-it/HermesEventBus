@@ -111,9 +111,9 @@ public class HermesEventBus {
     public void connectApp(Context context, String packageName) {
         mContext = context;
         mMainProcess = false;
-        Hermes.register(SubService.class);
         Hermes.setHermesListener(new HermesListener());
         Hermes.connectApp(context, packageName);
+        Hermes.register(SubService.class);
     }
 
     public void destroy() {
