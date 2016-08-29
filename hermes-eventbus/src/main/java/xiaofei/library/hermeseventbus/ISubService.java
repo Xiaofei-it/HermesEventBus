@@ -18,12 +18,11 @@
 
 package xiaofei.library.hermeseventbus;
 
-import xiaofei.library.hermes.annotation.ClassId;
-
 /**
  * Created by Xiaofei on 16/6/26.
+ *
+ * ISubService and SubService should never be registered!
  */
-//@ClassId("SubService")
 public interface ISubService {
 
     void post(Object event);

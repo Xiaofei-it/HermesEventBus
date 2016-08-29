@@ -19,6 +19,7 @@
 package xiaofei.library.hermeseventbus;
 
 import xiaofei.library.hermes.annotation.ClassId;
+import xiaofei.library.hermes.annotation.MethodId;
 
 /**
  * Created by Xiaofei on 16/6/4.
@@ -26,22 +27,31 @@ import xiaofei.library.hermes.annotation.ClassId;
 @ClassId("MainService")
 public interface IMainService {
 
+    @MethodId("register")
     void register(int pid, ISubService subService);
 
+    @MethodId("unregister")
     void unregister(int pid);
 
+    @MethodId("post")
     void post(Object event);
 
+    @MethodId("postSticky")
     void postSticky(Object event);
 
+    @MethodId("cancelEventDelivery")
     void cancelEventDelivery(Object event);
 
+    @MethodId("getStickyEvent")
     Object getStickyEvent(String eventType);
 
+    @MethodId("removeStickyEvent(String)")
     Object removeStickyEvent(String eventType);
 
+    @MethodId("removeStickyEvent(Object)")
     boolean removeStickyEvent(Object event);
 
+    @MethodId("removeAllStickyEvents")
     void removeAllStickyEvents();
 
 }

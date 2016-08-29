@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import xiaofei.library.hermes.annotation.ClassId;
 import xiaofei.library.hermes.annotation.GetInstance;
+import xiaofei.library.hermes.annotation.MethodId;
 
 /**
  * Created by Xiaofei on 16/6/9.
@@ -59,16 +60,19 @@ public class MainService implements IMainService {
         return sInstance;
     }
 
+    @MethodId("register")
     @Override
     public void register(int pid, ISubService subService) {
         mSubServices.put(pid, subService);
     }
 
+    @MethodId("unregister")
     @Override
     public void unregister(int pid) {
         mSubServices.remove(pid);
     }
 
+    @MethodId("post")
     @Override
     public void post(Object event) {
         mEventBus.post(event);
@@ -78,16 +82,19 @@ public class MainService implements IMainService {
         }
     }
 
+    @MethodId("removeStickyEvent(Object)")
     @Override
     public boolean removeStickyEvent(Object event) {
         return mEventBus.removeStickyEvent(event);
     }
 
+    @MethodId("removeAllStickyEvents")
     @Override
     public void removeAllStickyEvents() {
         mEventBus.removeAllStickyEvents();
     }
 
+    @MethodId("cancelEventDelivery")
     @Override
     public void cancelEventDelivery(Object event) {
         mEventBus.cancelEventDelivery(event);
@@ -97,6 +104,7 @@ public class MainService implements IMainService {
         }
     }
 
+    @MethodId("postSticky")
     @Override
     public void postSticky(Object event) {
         mEventBus.postSticky(event);
@@ -106,6 +114,7 @@ public class MainService implements IMainService {
         }
     }
 
+    @MethodId("getStickyEvent")
     @Override
     public Object getStickyEvent(String eventType) {
         try {
@@ -116,6 +125,7 @@ public class MainService implements IMainService {
         }
     }
 
+    @MethodId("removeStickyEvent(String)")
     @Override
     public Object removeStickyEvent(String eventType) {
         try {
