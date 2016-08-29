@@ -19,6 +19,8 @@
 package xiaofei.library.hermeseventbustest;
 
 import android.app.Application;
+import android.os.Process;
+import android.util.Log;
 
 import xiaofei.library.hermeseventbus.HermesEventBus;
 
@@ -29,6 +31,14 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+//        Thread.setDefaultUncaughtExceptionHandler(
+//                new Thread.UncaughtExceptionHandler() {
+//                    @Override
+//                    public void uncaughtException(Thread thread, Throwable throwable) {
+//                        Log.v("EricZhao", "Crash in Process "+ Process.myPid() + ", Thread " + thread.getName());//, throwable);
+//                    }
+//                });
+        Log.v("EricZhao", "Starting Process " + Process.myPid());
         HermesEventBus.getDefault().init(this);
         //The following is to check whether the potential bug caused by a dead lock
         //in the main thread has been fixed.

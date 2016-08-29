@@ -16,12 +16,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SecondActivity"
-            android:process=":f"/>
+        <activity
+            android:name=".SecondActivity"
+            android:process=":f" />
 
+        <service android:name="xiaofei.library.hermes.HermesService$HermesService0" />
         <service
-            android:name="xiaofei.library.hermes.HermesService$HermesService0"/>
-
+            android:name=".MyService"
+            android:process=":g"/>
     </application>
 
 </manifest>
