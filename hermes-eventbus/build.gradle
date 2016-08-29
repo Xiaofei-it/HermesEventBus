@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/Xiaofei-it/HermesEventBus-OriginalRepo'
     gitUrl = 'https://github.com/Xiaofei-it/HermesEventBus-OriginalRepo.git'
 
-    libraryVersion = '0.1.2'
+    libraryVersion = '0.1.3'
 
     developerId = 'Xiaofei-it'
     developerName = 'Eric Zhao'
@@ -32,7 +32,7 @@ android {
         minSdkVersion 8
         targetSdkVersion 23
         versionCode 2
-        versionName "0.1.2"
+        versionName "0.1.3"
     }
     buildTypes {
         release {
