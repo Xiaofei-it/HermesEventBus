@@ -102,9 +102,9 @@ public class HermesEventBus {
             Hermes.register(MainService.class);
             mMainApis = MainService.getInstance();
         } else {
-            Hermes.register(SubService.class);
             Hermes.setHermesListener(new HermesListener());
             Hermes.connect(context, Service.class);
+            Hermes.register(SubService.class);
         }
     }
 
