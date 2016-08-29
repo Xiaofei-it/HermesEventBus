@@ -18,19 +18,24 @@
 
 package xiaofei.library.hermeseventbus;
 
+import xiaofei.library.hermes.annotation.MethodId;
+
 /**
  * Created by Xiaofei on 16/6/26.
  *
- * ISubService and SubService should never be registered!
  */
 public interface ISubService {
 
+    @MethodId("post")
     void post(Object event);
 
+    @MethodId("cancelEventDelivery")
     void cancelEventDelivery(Object event);
 
+    @MethodId("removeStickyEvent")
     boolean removeStickyEvent(Object event);
 
+    @MethodId("removeAllStickyEvents")
     void removeAllStickyEvents();
 
 }

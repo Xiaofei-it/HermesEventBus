@@ -20,6 +20,8 @@ package xiaofei.library.hermeseventbus;
 
 import org.greenrobot.eventbus.EventBus;
 
+import xiaofei.library.hermes.annotation.MethodId;
+
 /**
  * Created by Xiaofei on 16/6/25.
  */
@@ -44,21 +46,25 @@ public class SubService implements ISubService {
         return sInstance;
     }
 
+    @MethodId("post")
     @Override
     public void post(Object event) {
         mEventBus.post(event);
     }
 
+    @MethodId("removeStickyEvent")
     @Override
     public boolean removeStickyEvent(Object event) {
         return mEventBus.removeStickyEvent(event);
     }
 
+    @MethodId("removeAllStickyEvents")
     @Override
     public void removeAllStickyEvents() {
         mEventBus.removeAllStickyEvents();
     }
 
+    @MethodId("cancelEventDelivery")
     @Override
     public void cancelEventDelivery(Object event) {
         mEventBus.cancelEventDelivery(event);

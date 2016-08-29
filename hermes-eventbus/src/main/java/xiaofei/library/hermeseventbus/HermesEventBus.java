@@ -102,6 +102,7 @@ public class HermesEventBus {
             Hermes.register(MainService.class);
             mMainApis = MainService.getInstance();
         } else {
+            Hermes.register(SubService.class);
             Hermes.setHermesListener(new HermesListener());
             Hermes.connect(context, Service.class);
         }
@@ -110,6 +111,7 @@ public class HermesEventBus {
     public void connectApp(Context context, String packageName) {
         mContext = context;
         mMainProcess = false;
+        Hermes.register(SubService.class);
         Hermes.setHermesListener(new HermesListener());
         Hermes.connectApp(context, packageName);
     }
