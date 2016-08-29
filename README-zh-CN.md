@@ -99,7 +99,7 @@ HermesEventBus也能够在一个进程间传递event，所以如果你已经使�
 
 ```
 dependencies {
-    compile 'xiaofei.library:hermes-eventbus:0.1.1'
+    compile 'xiaofei.library:hermes-eventbus:0.1.6'
 }
 ```
 
@@ -109,7 +109,7 @@ dependencies {
 <dependency>
   <groupId>xiaofei.library</groupId>
   <artifactId>hermes-eventbus</artifactId>
-  <version>0.1.1</version>
+  <version>0.1.6</version>
   <type>pom</type>
 </dependency>
 ```

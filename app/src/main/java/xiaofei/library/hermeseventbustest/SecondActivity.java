@@ -72,7 +72,7 @@ public class SecondActivity extends AppCompatActivity {
         findViewById(R.id.remove_sticky_event).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HermesEventBus.getDefault().removeStickyEvent("sticky event");
+                HermesEventBus.getDefault().removeStickyEvent("This is a sticky event from the sub-process.");
                 Toast.makeText(getApplicationContext(), "Sticky event is removed", Toast.LENGTH_SHORT).show();
             }
         });

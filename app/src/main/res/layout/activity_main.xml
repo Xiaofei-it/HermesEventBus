@@ -37,7 +37,7 @@
         android:id="@+id/remove_sticky_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="remove sticky event"/>
+        android:text="remove sticky event from the main process"/>
     <Button
         android:id="@+id/remove_get_sticky_event"
         android:layout_width="wrap_content"
