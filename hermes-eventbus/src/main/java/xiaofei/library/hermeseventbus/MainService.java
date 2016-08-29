@@ -34,6 +34,10 @@ public class MainService implements IMainService {
 
     private static volatile MainService sInstance = null;
 
+    // This may contain some sub-services corresponding to some dead sub-processes,
+    // especially if the sub-process does not disconnect the service before it dies.
+    // Sending an event to a dead process will cause a DeadObjectException,
+    // but will not crash the app.
     private ConcurrentHashMap<Integer, ISubService> mSubServices;
 
     private EventBus mEventBus;
