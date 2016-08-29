@@ -48,4 +48,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="remove all sticky events"/>
+    <Button
+        android:id="@+id/start_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start service"/>
+    <!--<Button-->
+        <!--android:id="@+id/exception"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Throw an exception"/>-->
 </LinearLayout>

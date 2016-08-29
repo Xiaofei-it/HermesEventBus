@@ -264,6 +264,31 @@ public class HermesEventBus {
 
         @Override
         public void onHermesConnected(Class<? extends HermesService> service) {
+            // Here something should be paid attention to.
+            // If we has started MyService in a sub-process and then kill the main process,
+            // and if we has not set a default uncaught exception handler,
+            // then the following will happen:
+            // 1. HermesListener.onHermesDisconnected() is invoked, and an error occurs:
+            //    "Error occurs. Error 2: Service Unavailable: Check whether you have connected Hermes."
+            // 2. A new main process is created.
+            // 3. The sub-process where MyService runs will resume the Hermes connection with
+            //    the new main process, and HermesListener.onHermesConnected() is invoked.
+            // 4. The sub-process crashes in either of the following two ways:
+            //    (1) After getting the instance of IMainService, the GC runs because there is no strong
+            //        reference to the previous IMainService. However, the main process does not
+            //        have the corresponding MainService and thus throw an exception.
+            //    (2) In the previous version, mApis was set null when the service is disconnected.
+            //        Then a NPE was thrown when the service is reconnected.
+            /**
+            Log.v(TAG, "Hermes connected in Process " + Process.myPid());
+            mApis.set(Hermes.getInstanceInService(service, IMainService.class));
+            mApis.action(new Action<IMainService>() {
+                @Override
+                public void call(IMainService o) {
+                    o.register(Process.myPid(), SubService.getInstance());
+                }
+            });
+             */
             IMainService mainService = Hermes.getInstanceInService(service, IMainService.class);
             mainService.register(Process.myPid(), SubService.getInstance());
             if (mApis == null) {
@@ -274,6 +299,7 @@ public class HermesEventBus {
 
         @Override
         public void onHermesDisconnected(Class<? extends HermesService> service) {
+            // Log.v(TAG, "Hermes disconnected in Process " + Process.myPid());
             mApis.action(new Action<IMainService>() {
                 @Override
                 public void call(IMainService o) {
