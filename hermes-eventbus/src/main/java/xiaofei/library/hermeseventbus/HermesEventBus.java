@@ -163,6 +163,27 @@ public class HermesEventBus {
         mEventBus.unregister(subscriber);
     }
 
+    private void actionInternal(final Action<IMainService> action) {
+        if (mMainProcess) {
+            action.call(mMainApis);
+        } else {
+            if (mState == STATE_DISCONNECTED) {
+                Log.w(TAG, HERMES_SERVICE_DISCONNECTED);
+            } else if (mState == STATE_CONNECTING) {
+                mRemoteApis.actionNonNullNonBlocking(new Action<IMainService>() {
+                    @Override
+                    public void call(IMainService o) {
+                        action.call(o);
+                    }
+                });
+            } else if (mState == STATE_CONNECTED) {
+                action.call(mRemoteApis.get());
+            } else {
+                throw new IllegalStateException(UNKNOWN_ERROR);
+            }
+        }
+    }
+
     private <T> T calculateInternal(final Function<IMainService, ? extends T> function) {
         if (mMainProcess) {
             return function.call(mMainApis);
@@ -183,16 +204,6 @@ public class HermesEventBus {
                 throw new IllegalStateException(UNKNOWN_ERROR);
             }
         }
-    }
-
-    private void actionInternal(final Action<IMainService> action) {
-        calculateInternal(new Function<IMainService, Void>() {
-            @Override
-            public Void call(IMainService o) {
-                action.call(o);
-                return null;
-            }
-        });
     }
 
     public void post(final Object event) {
