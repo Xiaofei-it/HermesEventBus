@@ -290,9 +290,6 @@ public class HermesEventBus {
              */
             IMainService mainService = Hermes.getInstanceInService(service, IMainService.class);
             mainService.register(Process.myPid(), SubService.getInstance());
-            if (mRemoteApis == null) {
-                mRemoteApis = new ObjectCanary<IMainService>();
-            }
             mRemoteApis.set(mainService);
             mState = STATE_CONNECTED;
         }
@@ -307,7 +304,6 @@ public class HermesEventBus {
                 }
             });
             mRemoteApis.set(null);
-            mRemoteApis = null;
             mState = STATE_DISCONNECTED;
         }
     }
