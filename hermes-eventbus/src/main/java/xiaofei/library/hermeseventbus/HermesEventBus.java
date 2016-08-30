@@ -163,25 +163,36 @@ public class HermesEventBus {
         mEventBus.unregister(subscriber);
     }
 
-    private void actionInternal(final Action<IMainService> action) {
+    private <T> T calculateInternal(final Function<IMainService, ? extends T> function) {
         if (mMainProcess) {
-            action.call(mMainApis);
+            return function.call(mMainApis);
         } else {
             if (mState == STATE_DISCONNECTED) {
                 Log.w(TAG, HERMES_SERVICE_DISCONNECTED);
+                return null;
             } else if (mState == STATE_CONNECTING) {
-                mRemoteApis.actionNonNullNonBlocking(new Action<IMainService>() {
+                return mRemoteApis.calculateNonNull(new Function<IMainService, T>() {
                     @Override
-                    public void call(IMainService o) {
-                        action.call(o);
+                    public T call(IMainService o) {
+                        return function.call(o);
                     }
                 });
             } else if (mState == STATE_CONNECTED) {
-                action.call(mRemoteApis.get());
+                return function.call(mRemoteApis.get());
             } else {
                 throw new IllegalStateException(UNKNOWN_ERROR);
             }
         }
+    }
+
+    private void actionInternal(final Action<IMainService> action) {
+        calculateInternal(new Function<IMainService, Void>() {
+            @Override
+            public Void call(IMainService o) {
+                action.call(o);
+                return null;
+            }
+        });
     }
 
     public void post(final Object event) {
@@ -209,29 +220,6 @@ public class HermesEventBus {
                 o.postSticky(event);
             }
         });
-    }
-
-
-    private <T> T calculateInternal(final Function<IMainService, ? extends T> function) {
-        if (mMainProcess) {
-            return function.call(mMainApis);
-        } else {
-            if (mState == STATE_DISCONNECTED) {
-                Log.w(TAG, HERMES_SERVICE_DISCONNECTED);
-                return null;
-            } else if (mState == STATE_CONNECTING) {
-                return mRemoteApis.calculateNonNull(new Function<IMainService, T>() {
-                    @Override
-                    public T call(IMainService o) {
-                        return function.call(o);
-                    }
-                });
-            } else if (mState == STATE_CONNECTED) {
-                return function.call(mRemoteApis.get());
-            } else {
-                throw new IllegalStateException(UNKNOWN_ERROR);
-            }
-        }
     }
 
     public <T> T getStickyEvent(final Class<T> eventType) {
