@@ -29,7 +29,6 @@ import xiaofei.library.concurrentutils.ObjectCanary;
 import xiaofei.library.concurrentutils.util.Action;
 import xiaofei.library.concurrentutils.util.Function;
 import xiaofei.library.hermes.Hermes;
-import xiaofei.library.hermes.HermesListener;
 import xiaofei.library.hermes.HermesService;
 
 /**
@@ -41,6 +40,16 @@ public class HermesEventBus {
 
     private static final String HERMES_SERVICE_DISCONNECTED = "Hermes service disconnected!";
 
+    private static final String UNKNOWN_ERROR = "An unknown error occurred. Please report this to the author.";
+
+    private static final int STATE_UNDEFINED = -1;
+
+    private static final int STATE_DISCONNECTED = 0;
+
+    private static final int STATE_CONNECTING = 1;
+
+    private static final int STATE_CONNECTED = 2;
+
     private static volatile HermesEventBus sInstance = null;
 
     private final EventBus mEventBus;
@@ -49,21 +58,24 @@ public class HermesEventBus {
 
     private volatile boolean mMainProcess;
 
-    private volatile ObjectCanary<IMainService> mApis;
+    private volatile ObjectCanary<IMainService> mRemoteApis;
 
     private volatile MainService mMainApis;
 
+    private volatile int mState = STATE_UNDEFINED;
+
     /**
      * TODO
-     * 1. Change the name of mApis
-     * 2. Create an integer field to indicate the state: NOT_CONNECTED, CONNECTED, DISCONNECTED
-     *    to fix the problems in the GitHub issues.
-     * 3. Consider more about the interleaving.
-      */
+     *
+     * 1. Consider more about the interleaving, especially when the service is being connected or disconnected.
+     *
+     * 2.
+     *
+     */
 
     private HermesEventBus() {
         mEventBus = EventBus.getDefault();
-        mApis = new ObjectCanary<IMainService>();
+        mRemoteApis = new ObjectCanary<IMainService>();
     }
 
     public static HermesEventBus getDefault() {
@@ -102,6 +114,7 @@ public class HermesEventBus {
             Hermes.register(MainService.class);
             mMainApis = MainService.getInstance();
         } else {
+            mState = STATE_CONNECTING;
             Hermes.setHermesListener(new HermesListener());
             Hermes.connect(context, Service.class);
             Hermes.register(SubService.class);
@@ -111,6 +124,7 @@ public class HermesEventBus {
     public void connectApp(Context context, String packageName) {
         mContext = context;
         mMainProcess = false;
+        mState = STATE_CONNECTING;
         Hermes.setHermesListener(new HermesListener());
         Hermes.connectApp(context, packageName);
         Hermes.register(SubService.class);
@@ -134,126 +148,111 @@ public class HermesEventBus {
         mEventBus.unregister(subscriber);
     }
 
-    public void post(final Object event) {
+    private void actionInternal(final Action<IMainService> action) {
         if (mMainProcess) {
-            mMainApis.post(event);
+            action.call(mMainApis);
         } else {
-            if (mApis == null) {
+            if (mState == STATE_DISCONNECTED) {
                 Log.w(TAG, HERMES_SERVICE_DISCONNECTED);
-            } else {
-                mApis.actionNonNullNonBlocking(new Action<IMainService>() {
+            } else if (mState == STATE_CONNECTING) {
+                mRemoteApis.actionNonNullNonBlocking(new Action<IMainService>() {
                     @Override
                     public void call(IMainService o) {
-                        o.post(event);
+                        action.call(o);
                     }
                 });
+            } else if (mState == STATE_CONNECTED) {
+                action.call(mRemoteApis.get());
+            } else {
+                throw new IllegalStateException(UNKNOWN_ERROR);
             }
         }
+    }
+
+    public void post(final Object event) {
+        actionInternal(new Action<IMainService>() {
+            @Override
+            public void call(IMainService o) {
+                o.post(event);
+            }
+        });
     }
 
     public void cancelEventDelivery(final Object event) {
-        if (mMainProcess) {
-            mMainApis.cancelEventDelivery(event);
-        } else {
-            if (mApis == null) {
-                Log.w(TAG, HERMES_SERVICE_DISCONNECTED);
-            } else {
-                mApis.actionNonNullNonBlocking(new Action<IMainService>() {
-                    @Override
-                    public void call(IMainService o) {
-                        o.cancelEventDelivery(event);
-                    }
-                });
+        actionInternal(new Action<IMainService>() {
+            @Override
+            public void call(IMainService o) {
+                o.cancelEventDelivery(event);
             }
-        }
+        });
     }
 
     public void postSticky(final Object event) {
+        actionInternal(new Action<IMainService>() {
+            @Override
+            public void call(IMainService o) {
+                o.postSticky(event);
+            }
+        });
+    }
+
+
+    private <T> T calculateInternal(final Function<IMainService, ? extends T> function) {
         if (mMainProcess) {
-            mMainApis.postSticky(event);
+            return function.call(mMainApis);
         } else {
-            if (mApis == null) {
+            if (mState == STATE_DISCONNECTED) {
                 Log.w(TAG, HERMES_SERVICE_DISCONNECTED);
-            } else {
-                mApis.actionNonNullNonBlocking(new Action<IMainService>() {
+                return null;
+            } else if (mState == STATE_CONNECTING) {
+                return mRemoteApis.calculateNonNull(new Function<IMainService, T>() {
                     @Override
-                    public void call(IMainService o) {
-                        o.postSticky(event);
+                    public T call(IMainService o) {
+                        return function.call(o);
                     }
                 });
+            } else if (mState == STATE_CONNECTED) {
+                return function.call(mRemoteApis.get());
+            } else {
+                throw new IllegalStateException(UNKNOWN_ERROR);
             }
         }
     }
 
     public <T> T getStickyEvent(final Class<T> eventType) {
-        if (mMainProcess) {
-            return eventType.cast(mMainApis.getStickyEvent(eventType.getName()));
-        } else {
-            if (mApis == null) {
-                Log.w(TAG, HERMES_SERVICE_DISCONNECTED);
-                return null;
-            } else {
-                return mApis.calculateNonNull(new Function<IMainService, T>() {
-                    @Override
-                    public T call(IMainService o) {
-                        return eventType.cast(o.getStickyEvent(eventType.getName()));
-                    }
-                });
+        return calculateInternal(new Function<IMainService, T>() {
+            @Override
+            public T call(IMainService o) {
+                return eventType.cast(o.getStickyEvent(eventType.getName()));
             }
-        }
+        });
     }
 
     public <T> T removeStickyEvent(final Class<T> eventType) {
-        if (mMainProcess) {
-            return eventType.cast(mMainApis.removeStickyEvent(eventType.getName()));
-        } else {
-            if (mApis == null) {
-                Log.w(TAG, HERMES_SERVICE_DISCONNECTED);
-                return null;
-            } else {
-                return mApis.calculateNonNull(new Function<IMainService, T>() {
-                    @Override
-                    public T call(IMainService o) {
-                        return eventType.cast(o.removeStickyEvent(eventType.getName()));
-                    }
-                });
+        return calculateInternal(new Function<IMainService, T>() {
+            @Override
+            public T call(IMainService o) {
+                return eventType.cast(o.removeStickyEvent(eventType.getName()));
             }
-        }
+        });
     }
 
-    public boolean removeStickyEvent(final Object event) {
-        if (mMainProcess) {
-            return mMainApis.removeStickyEvent(event);
-        } else {
-            if (mApis == null) {
-                Log.w(TAG, HERMES_SERVICE_DISCONNECTED);
-                return false;
-            } else {
-                return mApis.calculateNonNull(new Function<IMainService, Boolean>() {
-                    @Override
-                    public Boolean call(IMainService o) {
-                        return o.removeStickyEvent(event);
-                    }
-                });
+    public Boolean removeStickyEvent(final Object event) {
+        return calculateInternal(new Function<IMainService, Boolean>() {
+            @Override
+            public Boolean call(IMainService o) {
+                return o.removeStickyEvent(event);
             }
-        }
+        });
     }
 
     public void removeAllStickyEvents() {
-        if (mMainProcess) {
-            mMainApis.removeAllStickyEvents();
-        } else {
-            if (mApis == null) {
-                Log.w(TAG, HERMES_SERVICE_DISCONNECTED);
-            } else {
-                mApis.actionNonNullNonBlocking(new Action<IMainService>() {
-                    @Override
-                    public void call(IMainService o) {
-                        o.removeAllStickyEvents();
-                    }
-                });
+        actionInternal(new Action<IMainService>() {
+            @Override
+            public void call(IMainService o) {
+                o.removeAllStickyEvents();
             }
-        }
+        });
     }
 
     public boolean hasSubscriberForEvent(Class<?> eventClass) {
@@ -277,12 +276,12 @@ public class HermesEventBus {
             //    (1) After getting the instance of IMainService, the GC runs because there is no strong
             //        reference to the previous IMainService. However, the main process does not
             //        have the corresponding MainService and thus throw an exception.
-            //    (2) In the previous version, mApis was set null when the service is disconnected.
+            //    (2) In the previous version, mRemoteApis was set null when the service is disconnected.
             //        Then a NPE was thrown when the service is reconnected.
             /**
             Log.v(TAG, "Hermes connected in Process " + Process.myPid());
-            mApis.set(Hermes.getInstanceInService(service, IMainService.class));
-            mApis.action(new Action<IMainService>() {
+            mRemoteApis.set(Hermes.getInstanceInService(service, IMainService.class));
+            mRemoteApis.action(new Action<IMainService>() {
                 @Override
                 public void call(IMainService o) {
                     o.register(Process.myPid(), SubService.getInstance());
@@ -291,23 +290,25 @@ public class HermesEventBus {
              */
             IMainService mainService = Hermes.getInstanceInService(service, IMainService.class);
             mainService.register(Process.myPid(), SubService.getInstance());
-            if (mApis == null) {
-                mApis = new ObjectCanary<IMainService>();
+            if (mRemoteApis == null) {
+                mRemoteApis = new ObjectCanary<IMainService>();
             }
-            mApis.set(mainService);
+            mRemoteApis.set(mainService);
+            mState = STATE_CONNECTED;
         }
 
         @Override
         public void onHermesDisconnected(Class<? extends HermesService> service) {
             // Log.v(TAG, "Hermes disconnected in Process " + Process.myPid());
-            mApis.action(new Action<IMainService>() {
+            mRemoteApis.action(new Action<IMainService>() {
                 @Override
                 public void call(IMainService o) {
                     o.unregister(Process.myPid());
                 }
             });
-            mApis.set(null);
-            mApis = null;
+            mRemoteApis.set(null);
+            mRemoteApis = null;
+            mState = STATE_DISCONNECTED;
         }
     }
 
