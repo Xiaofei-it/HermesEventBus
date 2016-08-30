@@ -86,6 +86,9 @@ public class SecondActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 HermesEventBus.getDefault().destroy();
+                // The above statement is actually useless, for there is no enough time for disconnecting.
+                // So once this button is pressed, you will see a DeadObjectException as long as you
+                // send an event between processes.
                 Process.killProcess(Process.myPid());
             }
         });

@@ -69,7 +69,22 @@ public class HermesEventBus {
      *
      * 1. Consider more about the interleaving, especially when the service is being connected or disconnected.
      *
-     * 2.
+     * 2. I should solve the following problems in the future:
+     *
+     *    (1) Before the connection succeeds, e1, e2 and e3 are put into the queue.
+     *        Then when the connection succeeds, they are posted one by one.
+     *        However, after e1 is posted, we post another event e4.
+     *        How can I guarantee that e4 is posted after e3?
+     *
+     *    (2) Before the connection succeeds, some sticky events (e1, e2 and e3)
+     *        are put into the queue.
+     *        Then when the connection succeeds, they are posted one by one.
+     *        However, after e1 is posted, we get a sticky event.
+     *        How can I guarantee that we get e3 rather than e1?
+     *
+     *    I have made some modifications in the concurrent library but has not imported it
+     *    into HermesEventBus.
+     *    Work remains to be done in the future.
      *
      */
 
