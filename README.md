@@ -8,10 +8,10 @@ development. It has the same APIs as EventBus and easy to use.
 [EventBus](https://github.com/greenrobot/EventBus) is one of the most widely-used libraries which
 simplifies communication between different components in Android.
 
-Note that this library is based on EventBus 3.0.0 and if you are using the lower version, you should
+Note that HermesEventBus is based on EventBus 3.0.0 and if you are using the lower version, you should
 modify your code. Otherwise you will not receive any event!!!
 
-It is useless to name the method receiving events "onEventXXX". Instead, you should add @Subscribe
+It is useless to name the method receiving events "onEventXXX". Instead, you should add an @Subscribe
 annotation on the method, as the following does:
 
 ```
@@ -23,7 +23,7 @@ public void showText(String text) {
 
 #Principle
 
-The library is based on two libraries: [Hermes](https://github.com/Xiaofei-it/Hermes) and
+This library is based on two libraries: [Hermes](https://github.com/Xiaofei-it/Hermes) and
 [EventBus](https://github.com/greenrobot/EventBus).
 
 The event post is based on EventBus and the IPC is based on Hermes, a smart, novel and easy-to-use
@@ -44,18 +44,18 @@ Each time an event is posted, the library does the following:
 
 4. Each sub-process uses EventBus to post the event within itself.
 
-Moreover, import the [Concurrent-Utils](https://github.com/Xiaofei-it/Concurrent-Utils) library to
-solve the subtle problems with respect to concurrency, which are caused by dead locks and race
+Furthermore, HermesEventBus uses the [Concurrent-Utils](https://github.com/Xiaofei-it/Concurrent-Utils)
+library to solve the subtle problems with respect to concurrency, which are caused by dead locks and race
 conditions.
 
 #Usage
 
-This library can post events not only within a single app which has more than one process, but also
-between distinct apps.
+This library can be used to post events not only within a single app which has more than one process,
+but also between distinct apps.
 
 ##Within a single app
 
-If you only want to post and receive events within a single app which has more than one process,
+If you only need to post and receive events within a single app which has more than one process,
 then do the following three steps:
 
 ###Step 1
@@ -81,7 +81,7 @@ For maven, please use the following:
 
 ###Step 2
 
-In the onCreate method of your application class, add the following:
+In the `Application.onCreate()` method of your application class, add the following statement:
 
 ```
 HermesEventBus.getDefault().init(this);
@@ -103,7 +103,6 @@ you have already being using HermesEventBus.
 ##Between apps
 
 If you want to post and receive events between apps, then do the following:
-
 
 ###Step 1
 
@@ -128,16 +127,16 @@ For maven, please use the following:
 
 ###Step 2
 
-Choose an app as a main app. You can choose an arbitrary app as the main app, but a long-lived app
+Choose an app as the main app. You can choose an arbitrary app as the main app, but a long-lived app
 is preferred.
 
-In the AndroidManifest.xml of the main app, add the service below:
+In the `AndroidManifest.xml` of the main app, add the service below:
 
 ```
 <service android:name="xiaofei.library.hermes.HermesService$HermesService0"/>
 ```
 
-You can add some attributes to the service, if necessary.
+You may also add some attributes to the service, if necessary.
 
 ###Step 3
 
@@ -149,13 +148,13 @@ proguard-rule files.
 
 ###Step 4
 
-In the onCreate method of the application class of the main app, add the following:
+In the `Application.onCreate()` method of the application class of the main app, add the following statement:
 
 ```
 HermesEventBus.getDefault().init(this);
 ```
 
-In the onCreate method of the application class of other apps, add the following:
+In the `Application.onCreate()` method of the application class of other apps, add the following statement:
 
 ```
 HermesEventBus.getDefault().connectApp(this, packageName);
@@ -182,6 +181,10 @@ Xiaofei's GitHub: [https://github.com/Xiaofei-it](https://github.com/Xiaofei-it)
 
 [Hermes](https://github.com/Xiaofei-it/Hermes) is a smart, novel and easy-to-use framework for
 Android Inter-Process Communication (IPC).
+
+[Shelly](https://github.com/Xiaofei-it/Shelly) is a library for business-logic-oriented programming,
+providing a novel pattern which uses a method chain to illustrate how each component varies with a
+business object.
 
 [AndroidDataStorage](https://github.com/Xiaofei-it/AndroidDataStorage) is an easy-to-use and
 high-performance library for storing data in the Android system.
