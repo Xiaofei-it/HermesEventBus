@@ -66,16 +66,19 @@ public class HermesEventBus {
      *
      * 2. Pay attention to the following cases:
      *
-     *    (1) Before the connection succeeds, e1, e2 and e3 are put into the queue.
+     *    (1) Write-after-write hazard
+     *        Before the connection succeeds, e1, e2 and e3 are put into the queue.
      *        Then when the connection succeeds, they are posted one by one.
      *        However, after e1 is posted, we post another event e4.
      *        I should guarantee that e4 is posted after e3.
      *
-     *    (2) Before the connection succeeds, some sticky events (e1, e2 and e3)
+     *    (2) Read-after-write hazard
+     *        Before the connection succeeds, some sticky events (e1, e2 and e3)
      *        are put into the queue.
      *        Then when the connection succeeds, they are posted one by one.
      *        However, after e1 is posted, we get a sticky event.
      *        I should guarantee that we get e3 rather than e1.
+     *
      */
 
     private HermesEventBus() {
