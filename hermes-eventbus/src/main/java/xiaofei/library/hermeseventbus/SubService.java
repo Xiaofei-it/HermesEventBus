@@ -52,18 +52,6 @@ public class SubService implements ISubService {
         mEventBus.post(event);
     }
 
-    @MethodId("removeStickyEvent")
-    @Override
-    public boolean removeStickyEvent(Object event) {
-        return mEventBus.removeStickyEvent(event);
-    }
-
-    @MethodId("removeAllStickyEvents")
-    @Override
-    public void removeAllStickyEvents() {
-        mEventBus.removeAllStickyEvents();
-    }
-
     @MethodId("cancelEventDelivery")
     @Override
     public void cancelEventDelivery(Object event) {

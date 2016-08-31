@@ -32,10 +32,4 @@ public interface ISubService {
     @MethodId("cancelEventDelivery")
     void cancelEventDelivery(Object event);
 
-    @MethodId("removeStickyEvent")
-    boolean removeStickyEvent(Object event);
-
-    @MethodId("removeAllStickyEvents")
-    void removeAllStickyEvents();
-
 }
