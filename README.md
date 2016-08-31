@@ -1,18 +1,21 @@
 # HermesEventBus
 
 HermesEventBus is a library for using EventBus between processes, useful in the IPC or plugin
-development. It has the same APIs as EventBus and easy to use.
+development. It provides the same APIs as EventBus and is easy to use.
 
 [Chinese Readme 中文文档](README-zh-CN.md)
 
 [EventBus](https://github.com/greenrobot/EventBus) is one of the most widely-used libraries which
-simplifies communication between different components in Android.
+simplifies communication between different components in Android. However, it does not support event
+posting between processes.
 
-Note that HermesEventBus is based on EventBus 3.0.0 and if you are using the lower version, you should
+Therefore, HermesEventBus is composed to support event posting between processes.
+
+Note that HermesEventBus is based on EventBus 3.0.0 and if you are using the earlier version, you should
 modify your code. Otherwise you will not receive any event!!!
 
 It is useless to name the method receiving events "onEventXXX". Instead, you should add an @Subscribe
-annotation on the method, as the following does:
+annotation on the method:
 
 ```
 @Subscribe(threadMode = ThreadMode.MAIN)
@@ -26,7 +29,7 @@ public void showText(String text) {
 This library is based on two libraries: [Hermes](https://github.com/Xiaofei-it/Hermes) and
 [EventBus](https://github.com/greenrobot/EventBus).
 
-The event post is based on EventBus and the IPC is based on Hermes, a smart, novel and easy-to-use
+The event posting is based on EventBus. And the IPC is based on Hermes, a smart, novel and easy-to-use
 framework for Android Inter-Process Communication (IPC).
 
 <img src="doc/figure.png" width="600" height="400"/>
