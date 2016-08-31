@@ -38,7 +38,7 @@ public class ObjectCanary2<T> {
 
     private volatile T object;
 
-    private volatile AtomicInteger pendingTaskNumber;
+    private final AtomicInteger pendingTaskNumber;
 
     private final Lock lock;
 
@@ -56,6 +56,8 @@ public class ObjectCanary2<T> {
 
     public void action(final Action<? super T> action) {
         if (object == null || pendingTaskNumber.get() > 0) {
+            // The following statement must be executed before the runnable is put into the queue.
+            // TODO Will the following statements be reordered at the compile time?
             pendingTaskNumber.incrementAndGet();
             executor.execute(new Runnable() {
                 @Override
@@ -75,6 +77,7 @@ public class ObjectCanary2<T> {
                     } else {
                         action.call(object);
                     }
+                    // The following statement must be executed after the action is performed.
                     pendingTaskNumber.decrementAndGet();
                 }
             });

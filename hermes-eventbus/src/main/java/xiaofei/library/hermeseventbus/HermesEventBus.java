@@ -40,10 +40,6 @@ public class HermesEventBus {
 
     private static final String HERMES_SERVICE_DISCONNECTED = "Hermes service disconnected!";
 
-    private static final String UNKNOWN_ERROR = "An unknown error occurred. Please report this to the author.";
-
-    private static final int STATE_UNDEFINED = -1;
-
     private static final int STATE_DISCONNECTED = 0;
 
     private static final int STATE_CONNECTING = 1;
@@ -58,11 +54,11 @@ public class HermesEventBus {
 
     private volatile boolean mMainProcess;
 
-    private volatile ObjectCanary<IMainService> mRemoteApis;
+    private volatile ObjectCanary2<IMainService> mRemoteApis;
 
     private volatile MainService mMainApis;
 
-    private volatile int mState = STATE_UNDEFINED;
+    private volatile int mState = STATE_DISCONNECTED;
 
     /**
      * TODO
@@ -90,7 +86,7 @@ public class HermesEventBus {
 
     private HermesEventBus() {
         mEventBus = EventBus.getDefault();
-        mRemoteApis = new ObjectCanary<IMainService>();
+        mRemoteApis = new ObjectCanary2<IMainService>();
     }
 
     public static HermesEventBus getDefault() {
@@ -122,7 +118,7 @@ public class HermesEventBus {
     }
 
     public void init(Context context) {
-        mContext = context;
+        mContext = context.getApplicationContext();
         mMainProcess = isMainProcess(context.getApplicationContext());
         if (mMainProcess) {
             Hermes.init(context);
@@ -137,7 +133,7 @@ public class HermesEventBus {
     }
 
     public void connectApp(Context context, String packageName) {
-        mContext = context;
+        mContext = context.getApplicationContext();
         mMainProcess = false;
         mState = STATE_CONNECTING;
         Hermes.setHermesListener(new HermesListener());
@@ -169,17 +165,13 @@ public class HermesEventBus {
         } else {
             if (mState == STATE_DISCONNECTED) {
                 Log.w(TAG, HERMES_SERVICE_DISCONNECTED);
-            } else if (mState == STATE_CONNECTING) {
-                mRemoteApis.actionNonNullNonBlocking(new Action<IMainService>() {
+            } else {
+                mRemoteApis.action(new Action<IMainService>() {
                     @Override
                     public void call(IMainService o) {
                         action.call(o);
                     }
                 });
-            } else if (mState == STATE_CONNECTED) {
-                action.call(mRemoteApis.get());
-            } else {
-                throw new IllegalStateException(UNKNOWN_ERROR);
             }
         }
     }
@@ -191,17 +183,13 @@ public class HermesEventBus {
             if (mState == STATE_DISCONNECTED) {
                 Log.w(TAG, HERMES_SERVICE_DISCONNECTED);
                 return null;
-            } else if (mState == STATE_CONNECTING) {
-                return mRemoteApis.calculateNonNull(new Function<IMainService, T>() {
+            } else {
+                return mRemoteApis.calculate(new Function<IMainService, T>() {
                     @Override
                     public T call(IMainService o) {
                         return function.call(o);
                     }
                 });
-            } else if (mState == STATE_CONNECTED) {
-                return function.call(mRemoteApis.get());
-            } else {
-                throw new IllegalStateException(UNKNOWN_ERROR);
             }
         }
     }
@@ -311,14 +299,16 @@ public class HermesEventBus {
         @Override
         public void onHermesDisconnected(Class<? extends HermesService> service) {
             // Log.v(TAG, "Hermes disconnected in Process " + Process.myPid());
+            mState = STATE_DISCONNECTED;
             mRemoteApis.action(new Action<IMainService>() {
                 @Override
                 public void call(IMainService o) {
                     o.unregister(Process.myPid());
                 }
             });
-            mRemoteApis.set(null);
-            mState = STATE_DISCONNECTED;
+            // I deleted the statement which assigns null to mRemoteApis.
+            // Then, if the service is disconnected, the pending events will still be posted
+            // but this process will not receive them any more.
         }
     }
 
