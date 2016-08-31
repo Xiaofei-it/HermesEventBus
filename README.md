@@ -64,7 +64,7 @@ Add the following into your gradle file:
 
 ```
 dependencies {
-    compile 'xiaofei.library:hermes-eventbus:0.1.6'
+    compile 'xiaofei.library:hermes-eventbus:0.2.0'
 }
 ```
 
@@ -74,7 +74,7 @@ For maven, please use the following:
 <dependency>
   <groupId>xiaofei.library</groupId>
   <artifactId>hermes-eventbus</artifactId>
-  <version>0.1.6</version>
+  <version>0.2.0</version>
   <type>pom</type>
 </dependency>
 ```

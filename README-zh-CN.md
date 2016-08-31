@@ -51,7 +51,7 @@ public void showText(String text) {
 
 ```
 dependencies {
-    compile 'xiaofei.library:hermes-eventbus:0.1.1'
+    compile 'xiaofei.library:hermes-eventbus:0.2.0'
 }
 ```
 
@@ -61,7 +61,7 @@ dependencies {
 <dependency>
   <groupId>xiaofei.library</groupId>
   <artifactId>hermes-eventbus</artifactId>
-  <version>0.1.1</version>
+  <version>0.2.0</version>
   <type>pom</type>
 </dependency>
 ```
