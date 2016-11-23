@@ -88,6 +88,17 @@ HermesEventBus.getDefault().post(new Event());
 
 HermesEventBus也能够在一个进程间传递event，所以如果你已经使用了HermesEventBus，那么就不要再使用EventBus了。
 
+
+###Step 4
+
+如果进程不需要再发送和接受event，那么这个进程必须调用：
+
+```
+HermesEventBus.getDefault().destroy();
+```
+
+否则你会收到`android.os.DeadObjectException`和其他一些异常。这些异常会打印一些异常信息但不会导致app崩溃。
+
 ##多个app间的用法（使用DroidPlugin的时候就是这种情况）
 
 如果你想在多个app间收发event，那么就做如下几步：
@@ -160,6 +171,16 @@ HermesEventBus.getDefault().post(new Event());
 ```
 
 HermesEventBus也能够在一个进程间传递event，所以如果你已经使用了HermesEventBus，那么就不要再使用EventBus了。
+
+###Step 6
+
+如果进程不需要再发送和接受event，那么这个进程必须调用：
+
+```
+HermesEventBus.getDefault().destroy();
+```
+
+否则你会收到`android.os.DeadObjectException`和其他一些异常。这些异常会打印一些异常信息但不会导致app崩溃。
 
 #友情链接
 
