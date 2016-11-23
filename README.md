@@ -103,6 +103,17 @@ HermesEventBus.getDefault().post(new Event());
 HermesEventBus can also post and receive event within a process, so do not use EventBus any more if
 you have already being using HermesEventBus.
 
+###Step 4
+
+If a process no longer need to post and receive any event, the process should call the following:
+
+
+```
+HermesEventBus.getDefault().destroy();
+```
+
+Otherwise you will have got a `android.os.DeadObjectException` or some other exceptions. However, these exceptions will print some exception messages but will not crash your app.
+
 ##Between apps
 
 If you want to post and receive events between apps, then do the following:
@@ -177,6 +188,18 @@ HermesEventBus.getDefault().post(new Event());
 
 HermesEventBus can also post and receive event within a process, so do not use EventBus any more if
 you have already being using HermesEventBus.
+
+
+###Step 6
+
+If a process no longer need to post and receive any event, the process should call the following:
+
+
+```
+HermesEventBus.getDefault().destroy();
+```
+
+Otherwise you will have got a `android.os.DeadObjectException` or some other exceptions. However, these exceptions will print some exception messages but will not crash your app.
 
 #More open source projects by Xiaofei
 
