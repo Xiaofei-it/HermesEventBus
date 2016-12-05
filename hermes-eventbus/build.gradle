@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/Xiaofei-it/HermesEventBus-OriginalRepo'
     gitUrl = 'https://github.com/Xiaofei-it/HermesEventBus-OriginalRepo.git'
 
-    libraryVersion = '0.2.0'
+    libraryVersion = '0.3.0'
 
     developerId = 'Xiaofei-it'
     developerName = 'Eric Zhao'
@@ -31,8 +31,8 @@ android {
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 23
-        versionCode 3
-        versionName "0.2.0"
+        versionCode 4
+        versionName "0.3.0"
     }
     buildTypes {
         release {
@@ -47,7 +47,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'xiaofei.library:hermes:0.6.1'
+    compile 'xiaofei.library:hermes:0.7.0'
     compile 'xiaofei.library:concurrent-utils:0.1.4'
 }
 
