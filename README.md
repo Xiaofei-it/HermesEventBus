@@ -67,7 +67,7 @@ Add the following into your gradle file:
 
 ```
 dependencies {
-    compile 'xiaofei.library:hermes-eventbus:0.2.0'
+    compile 'xiaofei.library:hermes-eventbus:0.3.0'
 }
 ```
 
@@ -77,7 +77,7 @@ For maven, please use the following:
 <dependency>
   <groupId>xiaofei.library</groupId>
   <artifactId>hermes-eventbus</artifactId>
-  <version>0.2.0</version>
+  <version>0.3.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -124,7 +124,7 @@ Add the following into the gradle file of each app:
 
 ```
 dependencies {
-    compile 'xiaofei.library:hermes-eventbus:0.2.0'
+    compile 'xiaofei.library:hermes-eventbus:0.3.0'
 }
 ```
 
@@ -134,7 +134,7 @@ For maven, please use the following:
 <dependency>
   <groupId>xiaofei.library</groupId>
   <artifactId>hermes-eventbus</artifactId>
-  <version>0.2.0</version>
+  <version>0.3.0</version>
   <type>pom</type>
 </dependency>
 ```

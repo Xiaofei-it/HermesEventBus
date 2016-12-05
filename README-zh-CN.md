@@ -53,7 +53,7 @@ public void showText(String text) {
 
 ```
 dependencies {
-    compile 'xiaofei.library:hermes-eventbus:0.2.0'
+    compile 'xiaofei.library:hermes-eventbus:0.3.0'
 }
 ```
 
@@ -63,7 +63,7 @@ dependencies {
 <dependency>
   <groupId>xiaofei.library</groupId>
   <artifactId>hermes-eventbus</artifactId>
-  <version>0.2.0</version>
+  <version>0.3.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -109,7 +109,7 @@ HermesEventBus.getDefault().destroy();
 
 ```
 dependencies {
-    compile 'xiaofei.library:hermes-eventbus:0.2.0'
+    compile 'xiaofei.library:hermes-eventbus:0.3.0'
 }
 ```
 
@@ -119,7 +119,7 @@ dependencies {
 <dependency>
   <groupId>xiaofei.library</groupId>
   <artifactId>hermes-eventbus</artifactId>
-  <version>0.2.0</version>
+  <version>0.3.0</version>
   <type>pom</type>
 </dependency>
 ```
